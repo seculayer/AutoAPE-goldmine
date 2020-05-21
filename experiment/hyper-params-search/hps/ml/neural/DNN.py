@@ -3,4 +3,7 @@
 # e-mail : jinkim@seculayer.com
 # Powered by Seculayer © 2020 Solution Development 2 Team, R&D Center. 
 
-# class : class_name
+from hps.ml.TensorFlowAbstract import TensorFlowAbstract
+# class : DNN
+class DNN(TensorFlowAbstract):
+    pass
