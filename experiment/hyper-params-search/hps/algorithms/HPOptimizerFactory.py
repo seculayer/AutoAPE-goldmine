@@ -3,7 +3,8 @@
 # e-mail : jinkim@seculayer.com
 # Powered by Seculayer © 2020 Solution Development 2 Team, R&D Center. 
 
-from hprs.core.algorithms.hpo.GeneticAlgorithm import GeneticAlgorithm
+from hps.algorithms.ga.GeneticAlgorithm import GeneticAlgorithm
+
 # class : HPOptimizerFactory
 class HPOptimizerFactory(object):
     @staticmethod
