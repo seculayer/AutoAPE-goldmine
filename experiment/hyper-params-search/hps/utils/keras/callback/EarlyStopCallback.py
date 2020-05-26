@@ -15,7 +15,7 @@ class EarlyStopCallback(tf.keras.callbacks.Callback):
         super(EarlyStopCallback, self).__init__()
 
         self.learn_params = learn_params
-        self.AI_LOGGER = Common.LOGGER.getLogger()
+        self.LOGGER = Common.LOGGER.getLogger()
 
         self.prev_val = np.inf
         self.early_steps = 0
@@ -24,7 +24,7 @@ class EarlyStopCallback(tf.keras.callbacks.Callback):
     def stop_train(self, epoch):
         self.stopped_epoch = epoch
         self.model.stop_training = True
-        self.AI_LOGGER.info("------ EARLY STOP !!!!! -----")
+        self.LOGGER.info("------ EARLY STOP !!!!! -----")
 
     def get_stopped_epoch(self):
         return self.stopped_epoch
@@ -50,10 +50,10 @@ class EarlyStopCallback(tf.keras.callbacks.Callback):
                         self.early_steps += 1
                     else:
                         self.early_steps = 0
-                except:
-                    pass
+                except Exception as e:
+                    self.LOGGER.error(str(e), exc_info=True)
 
-                if self.early_steps >= self.learn_params["minsteps"]:
+                if self.early_steps >= self.learn_params["min_step"]:
                     self.stop_train(epoch)
                     return
 

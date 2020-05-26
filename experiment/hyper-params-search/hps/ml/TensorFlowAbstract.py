@@ -3,12 +3,16 @@
 # e-mail : jinkim@seculayer.com
 # Powered by Seculayer © 2020 Solution Development 2 Team, R&D Center. 
 
+from hps.utils.keras.callback.LearnResultCallback import LearnResultCallback
+from hps.utils.keras.callback.EarlyStopCallback import EarlyStopCallback
+
 # class : TensorFlowAbstract
 class TensorFlowAbstract(object):
     def __init__(self, param_dict):
         self.param_dict = self._check_parameter(param_dict)
         self.model = None
         self.inputs = None
+        self.stopped_epoch = None
 
     def _check_parameter(self, param_dict):
         return dict(
@@ -54,6 +58,14 @@ class TensorFlowAbstract(object):
         raise NotImplementedError
 
     def learn(self, x, y=None):
+        ## callbacks
+        result_callback = LearnResultCallback(global_sn=self.param_dict.get("global_sn", "0"))
+        early_stop_callback = EarlyStopCallback(self.param_dict)
+
         self.model.fit(
-            x=x, y=y, verbose=0, epochs=self.param_dict.get("global_step", 1)
+            x=x, y=y, verbose=0, epochs=self.param_dict.get("global_step", 1),
+            callbacks=[result_callback, early_stop_callback],
         )
+
+        self.stopped_epoch = early_stop_callback.get_stopped_epoch()
+        return result_callback.get_result()
