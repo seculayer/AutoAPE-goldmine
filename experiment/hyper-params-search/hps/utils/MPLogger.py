@@ -3,6 +3,7 @@
 # e-mail : jinkim@seculayer.co.kr
 # Powered by Seculayer © 2019 Intelligence Team, R&D Center.
 import sys
+import os, shutil
 import logging
 import logging.config
 import traceback
@@ -99,6 +100,10 @@ class MPLogger(object):
         self.log_dir = log_dir
         self.log_name = log_name
         self.log_level = MPLogger._get_level(log_level)
+
+        ## make log dir
+        if not os.path.exists(self.log_dir):
+            os.mkdir(self.log_dir)
 
         root = logging.getLogger()
         root.setLevel(self.log_level)

@@ -3,14 +3,21 @@
 # e-mail : jinkim@seculayer.com
 # Powered by Seculayer © 2020 Solution Development 2 Team, R&D Center. 
 
+import os
 import tensorflow as tf
 
+from hps.utils.Constants import Constants
 from hps.utils.Singleton import Singleton
 from hps.utils.MPLogger import MPLogger
 
 # class : Common
 class Common(metaclass=Singleton):
-    LOGGER = MPLogger(log_dir=".", log_name="HyperParamSearch.log", log_level="INFO")
+    __FILE_REAL_PATH = os.path.dirname(os.path.realpath(__file__))
+    LOGGER = MPLogger(
+        log_dir=__FILE_REAL_PATH + "/../" + Constants.DEFAULT.get("LOG_CONFIG", "LOG_DIR"),
+        log_name=Constants.DEFAULT.get("LOG_CONFIG", "LOG_NAME"),
+        log_level=Constants.DEFAULT.get("LOG_CONFIG", "LOG_LEVEL")
+    )
 
     @staticmethod
     def get_active_fn(act_fn):
