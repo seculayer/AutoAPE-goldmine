@@ -21,7 +21,6 @@
       "min_step" : "10",
       "early_key" : "accuracy",
       "early_value" : "0.98",
-      "method_type" : "Basic",
       "global_sn" : "0",
       "alg_sn" : "0",
       "algorithm_type" : "classifier",
