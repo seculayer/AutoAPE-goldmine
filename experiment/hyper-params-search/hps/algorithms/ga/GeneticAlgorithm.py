@@ -122,7 +122,7 @@ if __name__ == '__main__':
                 "method_type" : "Basic",
                 "global_sn" : "0",
                 "alg_sn" : "0",
-                "algorithm_type" : "Classifier",
+                "algorithm_type" : "classifier",
                 "job_type" : "learn"
             },
             "pbounds":{
