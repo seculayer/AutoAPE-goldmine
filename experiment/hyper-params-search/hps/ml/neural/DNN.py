@@ -5,7 +5,7 @@
 
 import tensorflow as tf
 
-from hps.utils.Common import Common
+from hps.utils.TensorFlowUtils import TensorFlowUtils
 from hps.ml.TensorFlowAbstract import TensorFlowAbstract
 
 # class : DNN
@@ -35,22 +35,22 @@ class DNN(TensorFlowAbstract):
         output_units = self.param_dict["output_units"]
         hidden_units = self.param_dict["hidden_units"]
         initial_weight = self.param_dict.get("initial_weight", 0.1)
-        act_fn = Common.get_active_fn(self.param_dict.get("act_fn", "relu"))
+        act_fn = TensorFlowUtils.get_active_fn(self.param_dict.get("act_fn", "relu"))
         dropout_prob = self.param_dict.get("dropout_prob", 0.1)
-        optimizer_fn = Common.get_optimizer_fn(self.param_dict.get("optimizer_fn", "adam"))
+        optimizer_fn = TensorFlowUtils.get_optimizer_fn(self.param_dict.get("optimizer_fn", "adam"))
         learning_rate = self.param_dict.get("learning_rate", 0.1)
-        units = Common.get_units(input_units, hidden_units, output_units)
+        units = TensorFlowUtils.get_units(input_units, hidden_units, output_units)
 
         ### keras Model
         self.model = tf.keras.Sequential()
         self.inputs = tf.keras.Input(shape=(units[0],), name= model_nm + '_X')
 
         # Multi-Layer Perceptron
-        Common.mlp_block(
+        TensorFlowUtils.mlp_block(
             self.model, units, act_fn, dropout_prob, initial_weight,
             model_nm+"mlp", algorithm_type
         )
-        Common.compile_model(self.model, algorithm_type, output_units, optimizer_fn, learning_rate)
+        TensorFlowUtils.compile_model(self.model, algorithm_type, output_units, optimizer_fn, learning_rate)
 
 
 if __name__ == '__main__':

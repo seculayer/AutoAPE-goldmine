@@ -9,8 +9,9 @@ else
         BASE_DIR=`echo "$EXEC_FILE" | sed 's/'"\/${BASE_NAME}"'$//'`
 fi
 
-echo "$BASE_DIR"
-export PYTHONPATH=$PYTHONPATH:$BASE_DIR/../
+### export path
+export PYTHONPATH=$PYTHONPATH:$BASE_DIR
 export LD_LIBRARY_PATH=/usr/local/cuda/lib64
 
-python3.5 main.py
+### experiment run
+python3.5 -m hps.main

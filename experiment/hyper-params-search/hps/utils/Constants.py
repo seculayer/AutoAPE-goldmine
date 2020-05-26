@@ -20,3 +20,9 @@ class Constants(metaclass=Singleton):
 
     ### default config
     DEFAULT = Configurations(config_path=__FILE_REAL_PATH+"/../conf/default.conf")
+
+    ### DIR SETTING
+    DIR_DATA = __FILE_REAL_PATH + "/../.." + DEFAULT.get("DIR_CONFIG", "DIR_DATA")
+
+if __name__ == '__main__':
+    print(Constants.DIR_DATA)
