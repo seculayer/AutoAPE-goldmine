@@ -5,7 +5,7 @@
 
 import tensorflow as tf
 
-from hps.utils.Common import Common
+from hps.utils.common.Common import Common
 
 # class : LearnResultCallback
 class LearnResultCallback(tf.keras.callbacks.Callback):

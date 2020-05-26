@@ -6,8 +6,8 @@
 import tensorflow as tf
 import numpy as np
 
-from hps.utils.Constants import Constants
-from hps.utils.Common import Common
+from hps.common.Constants import Constants
+from hps.common.Common import Common
 
 # class : EarlyStopCallback
 class EarlyStopCallback(tf.keras.callbacks.Callback):

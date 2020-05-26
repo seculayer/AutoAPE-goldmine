@@ -5,7 +5,7 @@
 
 import os
 
-from hps.utils.Constants import Constants
+from hps.utils.common.Constants import Constants
 from hps.utils.Singleton import Singleton
 from hps.utils.MPLogger import MPLogger
 from hps.utils.CommonUtils import CommonUtils

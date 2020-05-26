@@ -2,10 +2,9 @@
 import numpy as np
 import json
 
-from hprs.core.common.Constants import Constants
-from hprs.core.common.Common import Common
-from hprs.core.db.HPOptimizeDAO import HPOptimizeDAO
-from hprs.core.manager.HPOWorkerMonitor import HPOWorkerMonitor
+from hps.common.Constants import Constants
+from hps.common.Common import Common
+
 
 class HPOptimizationAbstract(object):
     def __init__(self, hprs_info, **kwargs):

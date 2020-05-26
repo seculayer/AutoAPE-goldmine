@@ -3,7 +3,6 @@
 # e-mail : jinkim@seculayer.co.kr
 # Powered by Seculayer © 2019 Intelligence Team, R&D Center.
 import sys
-import os, shutil
 import logging
 import logging.config
 import traceback
