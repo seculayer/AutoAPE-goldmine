@@ -14,13 +14,13 @@ class LearnResultCallback(tf.keras.callbacks.Callback):
 
         self.result_list = list()
         self.global_sn = kwargs["global_sn"]
-        self.AI_LOGGER = Common.LOGGER.getLogger()
+        self.LOGGER = Common.LOGGER.getLogger()
 
     def on_epoch_end(self, epoch, logs=None):
         result = logs
         result["step"] = epoch + 1
         result["global_sn"] = self.global_sn
-        self.AI_LOGGER.info(result)
+        self.LOGGER.info(result)
         self.result_list.append(result)
 
     def get_result(self):
