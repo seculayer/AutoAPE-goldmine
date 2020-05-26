@@ -12,3 +12,4 @@ class Constants(metaclass=Singleton):
     EARLY_TYPE_MIN = "min"
     EARLY_TYPE_MAX = "max"
     EARLY_TYPE_VAR = "var"
+
