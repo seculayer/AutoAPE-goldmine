@@ -1,5 +1,5 @@
 #!/bin/bash
-
+####
 BASE_DIR=
 EXEC_FILE="$0"
 BASE_NAME=`basename "$EXEC_FILE"`
@@ -8,10 +8,12 @@ if [ "$EXEC_FILE" = "./$BASE_NAME" ] || [ "$EXEC_FILE" = "$BASE_NAME" ]; then
 else
         BASE_DIR=`echo "$EXEC_FILE" | sed 's/'"\/${BASE_NAME}"'$//'`
 fi
+####
+PARAM_NAME="$1"
 
 ### export path
 export PYTHONPATH=$PYTHONPATH:$BASE_DIR
 export LD_LIBRARY_PATH=/usr/local/cuda/lib64
 
 ### experiment run
-python3.5 -m hps.main
+python3.5 -m hps.main "$PARAM_NAME"

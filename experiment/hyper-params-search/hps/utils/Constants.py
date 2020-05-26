@@ -23,6 +23,7 @@ class Constants(metaclass=Singleton):
 
     ### DIR SETTING
     DIR_DATA = __FILE_REAL_PATH + "/../.." + DEFAULT.get("DIR_CONFIG", "DIR_DATA")
+    DIR_PARAMS = DIR_DATA + DEFAULT.get("DIR_CONFIG", "DIR_PARAMS")
 
 if __name__ == '__main__':
     print(Constants.DIR_DATA)

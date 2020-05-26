@@ -16,6 +16,7 @@ class Common(metaclass=Singleton):
 
     # make directories
     CommonUtils.mkdir(Constants.DIR_DATA)
+    CommonUtils.mkdir(Constants.DIR_PARAMS)
 
     # make multi-process logger
     __DIR_LOG = __FILE_REAL_PATH + "/../../" + Constants.DEFAULT.get("LOG_CONFIG", "LOG_DIR")
