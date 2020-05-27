@@ -4,7 +4,7 @@
 
 * python 3.5.x
 * tensorflow_gpu (v. 2.0.0 b1)
-
+* tensorflow_datasets(v. 3.1.0)
 ### Running
 [Parameter Setting]
 ```json
@@ -30,11 +30,8 @@
       "early_type" : "2",
       "min_step" : "10",
       "early_key" : "accuracy",
-      "early_value" : "0.98",      
-      "global_sn" : "0",
-      "alg_sn" : "0",
-      "algorithm_type" : "classifier",
-      "job_type" : "learn"
+      "early_value" : "0.98",
+      "algorithm_type" : "classifier"
     },
     "pbounds":{
       "dropout_prob": [0, 0.5],
