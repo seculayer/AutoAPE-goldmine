@@ -9,6 +9,7 @@
 [Parameter Setting]
 ```json
 {
+  "dataset" : "mnist",
   "hpo_alg": "GA",
   "hpo_params" : {
     "mut_prob" : 0.5,

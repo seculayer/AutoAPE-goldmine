@@ -1,4 +1,5 @@
 {
+  "dataset" : "mnist",
   "hpo_alg": "GA",
   "hpo_params" : {
     "mut_prob" : 0.5,
@@ -21,8 +22,7 @@
       "min_step" : "10",
       "early_key" : "accuracy",
       "early_value" : "0.98",
-      "algorithm_type" : "classifier",
-      "job_type" : "learn"
+      "algorithm_type" : "classifier"
     },
     "pbounds":{
       "dropout_prob": [0, 0.5],
