@@ -7,32 +7,33 @@ from hps.common.Common import Common
 
 # class : HPOptimizationAbstract
 class HPOptimizationAbstract(object):
-    def __init__(self, hprs_info, **kwargs):
+    def __init__(self, hps_info, **kwargs):
         ### eyeCloudAI framework objects
         self.LOGGER = Common.LOGGER.getLogger()
 
         ### basic variables
-        self.hprs_info = hprs_info
+        self.hps_info = hps_info
 
         ### HPO Algorithm params
-        self._hpo_params = self.hprs_info["hpo_params"]
+        self._hpo_params = self.hps_info["hpo_params"]
         self._n_params = self._hpo_params["n_params"]
         self._n_steps = self._hpo_params["n_steps"]
         self._eval_key = self._hpo_params["eval_key"]
         self.k = self._hpo_params["k_val"]
 
         ### ML Algorithm Parmas
-        self._pbounds = self.hprs_info["ml_params"]["pbounds"]
+        self._pbounds = self.hps_info["ml_params"]["pbounds"]
 
         ### duplicate params
         self.unique_param_dict = dict()
         self.hash_idx_list = list()
         self.score_list = list()
 
+        print(self.hps_info)
     ##################
     # HPOptimize
     def optimize(self, dataset):
-        ml_alg = self.hprs_info["ml_alg"]
+        ml_alg = self.hps_info["ml_alg"]
         param_list = list()
         score_list = list()
         ## Hyper Parameter Optimize
@@ -42,7 +43,7 @@ class HPOptimizationAbstract(object):
             self.LOGGER.info(hyper_param_list)
 
             ### Get learning results
-            hash_list, score_list = self._learn(ml_alg, i, hyper_param_list)
+            hash_list, score_list = self._learn(i, hyper_param_list, dataset)
             self.LOGGER.info("{},{}".format(param_list, score_list))
 
             ### get best parameters
@@ -129,26 +130,50 @@ class HPOptimizationAbstract(object):
                 new_params.append(param_dict)
         return new_params
 
+    ###
+    def _make_learning_param_dict(self, step, idx, hyper_params):
+        temp_dict = dict()
+        model_nm = "-".join([self.hps_info["hpo_alg"], self.hps_info["ml_alg"], str(step), str(idx)])
+        temp_dict["model_nm"] = model_nm
 
-    def _learn(self, ml_alg, step, hyper_param_list):
+        return dict(temp_dict, **self.hps_info["ml_params"]["model_param"], **hyper_params)
+
+    def _learn(self, step, hyper_param_list, dataset, dup_exclude=False):
         ## get learning results
         hash_list = list()
         score_list = list()
         for idx, hyper_params in enumerate(hyper_param_list):
-            if results is not None and param_dict is not None:
-                ## param_dict
-                _temp_hash = self._param_dict_to_hash(param_dict)
-                hash_list.append(_temp_hash)
+            _temp_hash = self._param_dict_to_hash(hyper_params)
 
-                ## score
-                alg_sn = 0
-                score = float(results[alg_sn][-1][self._eval_key])
-                score_list.append(score)
+            # duplicated parameters
+            if self._check_duplicated_param_dict(self.unique_param_dict, hyper_params):
+                _score = self.unique_param_dict.get(_temp_hash).get("score", None)
+                if  _score is not None and dup_exclude == False:
+                    hash_list.append(_temp_hash)
+                    score_list.append(_score)
+                    continue
 
-                ### store history
-                _temp_dict = self.unique_param_dict[_temp_hash]
-                _temp_dict["score"] = score
-                _temp_dict["results"] = results
+            # make params
+            param_dict = self._make_learning_param_dict(step, idx, hyper_params)
+            print(param_dict)
+
+            # Machine learning - multi-processing
+
+
+            # if results is not None and param_dict is not None:
+            #     ## param_dict
+            #     _temp_hash = self._param_dict_to_hash(param_dict)
+            #     hash_list.append(_temp_hash)
+            #
+            #     ## score
+            #     alg_sn = 0
+            #     score = float(results[alg_sn][-1][self._eval_key])
+            #     score_list.append(score)
+            #
+            #     ### store history
+            #     _temp_dict = self.unique_param_dict[_temp_hash]
+            #     _temp_dict["score"] = score
+            #     _temp_dict["results"] = results
 
         return hash_list, score_list
 

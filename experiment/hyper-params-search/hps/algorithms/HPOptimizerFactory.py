@@ -12,7 +12,7 @@ class HPOptimizerFactory(object):
         hpo_alg = hpo_dict["hpo_alg"]
         if hpo_alg == "GA":
             # TODO : Check init & remove get_ga_params
-            ga = GeneticAlgorithm(hprs_info=hpo_dict)
+            ga = GeneticAlgorithm(hps_info=hpo_dict)
             return ga
         else:
             return GeneticAlgorithm()

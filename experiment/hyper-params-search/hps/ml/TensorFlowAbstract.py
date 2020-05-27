@@ -21,13 +21,12 @@ class TensorFlowAbstract(object):
             **self._check_hyper_params(param_dict)
         )
 
-    def _check_model_params(self, param_dict):
+    @staticmethod
+    def _check_model_params(param_dict):
         _param_dict = dict()
         try :
             ### learning parameters
             _param_dict["model_nm"] = str(param_dict["model_nm"])
-            _param_dict["alg_sn"] = str(param_dict["alg_sn"])
-            _param_dict["global_sn"] = str(param_dict["global_sn"])
             _param_dict["algorithm_type"] = str(param_dict["algorithm_type"])
             _param_dict["job_type"] = str(param_dict["job_type"])
         except Exception as e:
@@ -35,7 +34,8 @@ class TensorFlowAbstract(object):
 
         return _param_dict
 
-    def _check_learning_params(self, param_dict):
+    @staticmethod
+    def _check_learning_params(param_dict):
         _param_dict = dict()
         try :
             _param_dict["global_step"] = int(param_dict["global_step"])

@@ -57,8 +57,6 @@ if __name__ == '__main__':
     parameters = {
         ## model parameters
         "model_nm" : "DNN-test",
-        "alg_sn" : "0",
-        "global_sn" : "0",
         "algorithm_type" : "classifier",
         "job_type" : "learn",
         ## learning parameters
