@@ -116,7 +116,7 @@ if __name__ == '__main__':
                 "output_units" : "1",
                 "global_step" : "10",
                 "early_type" : "2",
-                "minsteps" : "10",
+                "min_step" : "10",
                 "early_key" : "accuracy",
                 "early_value" : "0.98",
                 "method_type" : "Basic",

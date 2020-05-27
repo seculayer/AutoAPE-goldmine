@@ -5,7 +5,7 @@ import json
 from hps.common.Constants import Constants
 from hps.common.Common import Common
 
-
+# class : HPOptimizationAbstract
 class HPOptimizationAbstract(object):
     def __init__(self, hprs_info, **kwargs):
         ### eyeCloudAI framework objects
@@ -31,8 +31,7 @@ class HPOptimizationAbstract(object):
 
     ##################
     # HPOptimize
-    def optimize(self):
-        hprs_id = self.hprs_info["hprs_id"]
+    def optimize(self, dataset):
         ml_alg = self.hprs_info["ml_alg"]
         param_list = list()
         score_list = list()
@@ -41,9 +40,11 @@ class HPOptimizationAbstract(object):
             ### Generate Candidate parameters
             hyper_param_list = self._generate(param_list, score_list)
             self.LOGGER.info(hyper_param_list)
+
             ### Get learning results
-            hash_list, score_list = self._learn(hprs_id, ml_alg, i, hyper_param_list)
+            hash_list, score_list = self._learn(ml_alg, i, hyper_param_list)
             self.LOGGER.info("{},{}".format(param_list, score_list))
+
             ### get best parameters
             # global
             self.hash_idx_list += hash_list
@@ -128,41 +129,12 @@ class HPOptimizationAbstract(object):
                 new_params.append(param_dict)
         return new_params
 
-    ### LEARNING
-    @staticmethod
-    def _insert_db_to_candidate_param(hprs_id, hprs_hist_no, ml_alg, hyper_params):
-        insert_data = {
-            "hprs_id" : hprs_id,
-            "hprs_hist_no" : hprs_hist_no,
-            "ml_alg": ml_alg,
-            "hyper_params" : json.dumps(hyper_params)
-        }
-        HPOptimizeDAO().insert_hpo_hist(insert_data)
 
-    @staticmethod
-    def _make_candidate_param_monitor_thread(hprs_id, hprs_hist_no):
-        _th = HPOWorkerMonitor(data={"hprs_id" : hprs_id, "hprs_hist_no" : hprs_hist_no})
-        _th.start()
-        return _th
-
-    def _learn(self, hprs_id, ml_alg, step, hyper_param_list):
-        monitor_list = list()
-        for idx, hyper_params in enumerate(hyper_param_list):
-            ## MAKE hprs_hist_no
-            hprs_hist_no = str(hprs_id) + str(step) + str(idx)
-            ## INSERT DB
-            self._insert_db_to_candidate_param(hprs_id, hprs_hist_no, ml_alg, hyper_params)
-            ## CREATE DB MONITORING THREAD
-            monitor_list.append(self._make_candidate_param_monitor_thread(hprs_id, hprs_hist_no))
-
+    def _learn(self, ml_alg, step, hyper_param_list):
         ## get learning results
         hash_list = list()
         score_list = list()
-        for monitor in monitor_list:
-            monitor.join()
-
-            param_dict = monitor.get_param_dict()
-            results = monitor.get_results()
+        for idx, hyper_params in enumerate(hyper_param_list):
             if results is not None and param_dict is not None:
                 ## param_dict
                 _temp_hash = self._param_dict_to_hash(param_dict)

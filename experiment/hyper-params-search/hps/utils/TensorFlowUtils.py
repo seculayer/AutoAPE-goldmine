@@ -68,7 +68,8 @@ class TensorFlowUtils(object):
     @staticmethod
     def compile_model(model, algorithm_type, output_units, optimizer_fn, learning_rate):
         if algorithm_type == "classifier":
-            loss_fn_nm = 'categorical_crossentropy'
+            # loss_fn_nm = 'categorical_crossentropy'
+            loss_fn_nm='sparse_categorical_crossentropy'
             if output_units == 1:
                 loss_fn_nm = "binary_crossentropy"
             model.compile(

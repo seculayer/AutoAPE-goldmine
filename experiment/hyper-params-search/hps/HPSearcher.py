@@ -3,7 +3,7 @@
 # e-mail : jinkim@seculayer.com
 # Powered by Seculayer © 2020 Solution Development 2 Team, R&D Center. 
 
-import sys
+import sys, time
 import json
 
 from hps.common.Constants import Constants
@@ -23,15 +23,17 @@ class HPSearcher(object):
 
     def run(self):
         hpo_algorithm = HPOptimizerFactory.create(self.hps_param_dict)
+        hpo_algorithm.optimize()
 
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         print("usage : python3.5 -m hps.main [param.json]")
     else :
-        param_json_nm = sys.argv[1]
-        hp_searcher = HPSearcher(param_json_nm)
+        param_json_filename = sys.argv[1]
+        hp_searcher = HPSearcher(param_json_filename)
         hp_searcher.run()
+        time.sleep(1)
 
 
 

@@ -62,25 +62,26 @@ if __name__ == '__main__':
         "algorithm_type" : "classifier",
         "job_type" : "learn",
         ## learning parameters
-        "global_step" : "100",
+        "global_step" : "10",
         "early_type": "none",
         "min_step": "10",
         "early_key": "accuracy",
         "early_value": "0.98",
         ## algorithm parameters
-        "input_units": "2",
-        "output_units": "2",
-        "hidden_units" : "5,4,3",
-        "dropout_prob" : "0.5",
+        "input_units": "784",
+        "output_units": "10",
+        "hidden_units" : "100, 200, 100",
+        "dropout_prob" : "0.1",
         "optimizer_fn" : "Adam",
         "learning_rate": "0.01",
         "initial_weight": "0.1",
-        "act_fn" : "ReLU",
+        "act_fn" : "tanh",
     }
     dnn = DNN(parameters)
     dnn.build()
 
-    import numpy as np
-    x = np.array([[-1., -1.], [-2., -1.], [1., 1.], [2., 1.]])
-    y = np.array([[0.5, 0.5], [0.8, 0.2], [0.3, 0.7], [0.1, 0.9]])
-    dnn.learn(x, y)
+    from hps.dataset.MNISTDataset import MNISTDataset
+    ds_learn, ds_test = MNISTDataset.get_tf_dataset_1d()
+
+    dnn.learn(ds_learn)
+    print(dnn.predict(ds_test))
