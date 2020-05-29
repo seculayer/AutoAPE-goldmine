@@ -10,9 +10,6 @@ from hps.common.Constants import Constants
 from hps.common.Common import Common
 from hps.algorithms.HPOptimizerFactory import HPOptimizerFactory
 
-from hps.dataset.MNISTDataset import MNISTDataset
-
-
 # class : HPSearcher
 class HPSearcher(object):
     def __init__(self, param_json_nm):
@@ -27,12 +24,8 @@ class HPSearcher(object):
     def run(self):
         ## HPO Algorithm
         hpo_algorithm = HPOptimizerFactory.create(self.hps_param_dict)
-
-        ## Dataset
-        ds_train, ds_test = MNISTDataset.get_tf_dataset_1d()
-
         ## Optimize
-        hpo_algorithm.optimize(dataset=ds_train)
+        hpo_algorithm.optimize()
 
 
 if __name__ == '__main__':

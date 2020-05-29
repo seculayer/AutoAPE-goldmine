@@ -28,7 +28,7 @@ class TensorFlowAbstract(object):
             ### learning parameters
             _param_dict["model_nm"] = str(param_dict["model_nm"])
             _param_dict["algorithm_type"] = str(param_dict["algorithm_type"])
-            _param_dict["job_type"] = str(param_dict["job_type"])
+            # _param_dict["job_type"] = str(param_dict["job_type"])
         except Exception as e:
             raise
 
@@ -57,13 +57,13 @@ class TensorFlowAbstract(object):
     def build(self):
         raise NotImplementedError
 
-    def learn(self, dataset):
+    def learn(self, dataset, verbose=0):
         ## callbacks
         result_callback = LearnResultCallback(global_sn=self.param_dict.get("global_sn", "0"))
         early_stop_callback = EarlyStopCallback(self.param_dict)
 
         self.model.fit(
-            dataset, verbose=0, epochs=self.param_dict.get("global_step", 1),
+            dataset, verbose=verbose, epochs=self.param_dict.get("global_step", 1),
             callbacks=[result_callback, early_stop_callback],
         )
 

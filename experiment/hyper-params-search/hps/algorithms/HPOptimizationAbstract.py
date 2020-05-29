@@ -1,9 +1,11 @@
 
 import numpy as np
 import json
+from multiprocessing import Queue
 
 from hps.common.Constants import Constants
 from hps.common.Common import Common
+from hps.ml.MLProcessor import MLProcessor
 
 # class : HPOptimizationAbstract
 class HPOptimizationAbstract(object):
@@ -13,6 +15,7 @@ class HPOptimizationAbstract(object):
 
         ### basic variables
         self.hps_info = hps_info
+        self.dataset_nm = self.hps_info["dataset"]
 
         ### HPO Algorithm params
         self._hpo_params = self.hps_info["hpo_params"]
@@ -21,7 +24,7 @@ class HPOptimizationAbstract(object):
         self._eval_key = self._hpo_params["eval_key"]
         self.k = self._hpo_params["k_val"]
 
-        ### ML Algorithm Parmas
+        ### ML Algorithm Params
         self._pbounds = self.hps_info["ml_params"]["pbounds"]
 
         ### duplicate params
@@ -32,8 +35,7 @@ class HPOptimizationAbstract(object):
         print(self.hps_info)
     ##################
     # HPOptimize
-    def optimize(self, dataset):
-        ml_alg = self.hps_info["ml_alg"]
+    def optimize(self):
         param_list = list()
         score_list = list()
         ## Hyper Parameter Optimize
@@ -43,7 +45,7 @@ class HPOptimizationAbstract(object):
             self.LOGGER.info(hyper_param_list)
 
             ### Get learning results
-            hash_list, score_list = self._learn(i, hyper_param_list, dataset)
+            hash_list, score_list = self._learn(i, hyper_param_list)
             self.LOGGER.info("{},{}".format(param_list, score_list))
 
             ### get best parameters
@@ -138,10 +140,12 @@ class HPOptimizationAbstract(object):
 
         return dict(temp_dict, **self.hps_info["ml_params"]["model_param"], **hyper_params)
 
-    def _learn(self, step, hyper_param_list, dataset, dup_exclude=False):
+    def _learn(self, step, hyper_param_list, dup_exclude=False):
         ## get learning results
         hash_list = list()
         score_list = list()
+        proc_list = list()
+        result_queue = Queue()
         for idx, hyper_params in enumerate(hyper_param_list):
             _temp_hash = self._param_dict_to_hash(hyper_params)
 
@@ -158,7 +162,12 @@ class HPOptimizationAbstract(object):
             print(param_dict)
 
             # Machine learning - multi-processing
-
+            proc_list.append(
+                MLProcessor(
+                    _temp_hash, self.hps_info["ml_alg"], param_dict,
+                    self.dataset_nm, result_queue,
+                )
+            )
 
             # if results is not None and param_dict is not None:
             #     ## param_dict
@@ -174,6 +183,13 @@ class HPOptimizationAbstract(object):
             #     _temp_dict = self.unique_param_dict[_temp_hash]
             #     _temp_dict["score"] = score
             #     _temp_dict["results"] = results
+
+        for proc in proc_list:
+            proc.start()
+
+        ### process end
+        for proc in proc_list:
+            proc.join()
 
         return hash_list, score_list
 

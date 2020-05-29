@@ -3,6 +3,7 @@
 # e-mail : jinkim@seculayer.com
 # Powered by Seculayer © 2020 Solution Development 2 Team, R&D Center. 
 
+import os
 import tensorflow as tf
 
 # class : TensorFlowUtils
@@ -83,3 +84,11 @@ class TensorFlowUtils(object):
                 loss="mse",
                 optimizer=optimizer_fn(learning_rate),
             )
+
+    @staticmethod
+    def device_memory_limit(gpu_idx, mem_limit):
+        os.environ["CUDA_VISIBLE_DEVICES"] = str(gpu_idx)
+        if str(gpu_idx) != "-1":
+            physical_devices = tf.config.experimental.list_physical_devices('GPU')
+            tf.config.experimental.set_virtual_device_configuration(physical_devices[0],[tf.config.experimental.VirtualDeviceConfiguration(memory_limit=mem_limit)])
+            tf.config.experimental.set_memory_growth(physical_devices[0], False)

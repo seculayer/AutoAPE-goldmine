@@ -29,7 +29,8 @@
       "optimizer_fn": ["Adam", "rmsprop", "Adadelta"],
       "learning_rate": [0, 0.8],
       "act_fn": ["Tanh", "ReLU", "Sigmoid"],
-      "hidden_units" : [3,1024]
+      "hidden_units" : [3,1024],
+      "initial_weight" : [0.01, 1.0]
     }
   }
 }
