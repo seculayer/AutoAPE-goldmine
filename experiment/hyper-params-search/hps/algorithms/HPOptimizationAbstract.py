@@ -17,6 +17,7 @@ class HPOptimizationAbstract(object):
         self.dataset_nm = self.hps_info["dataset"]
 
         ### HPO Algorithm params
+        self.DUP_CHECK = True
         self._hpo_params = self.hps_info["hpo_params"]
         self._n_params = self._hpo_params["n_params"]
         self._n_steps = self._hpo_params["n_steps"]
@@ -89,12 +90,12 @@ class HPOptimizationAbstract(object):
         else :
             return self._generate_single_params(self._pbounds[key])
 
-    def _generate_param_dict(self):
+    def _generate_param_dict(self, dup_check=True):
         param_dict = dict()
         for _ , key in enumerate(self._pbounds):
              param_dict[key] = self._generate_param(key)
 
-        if not self._check_duplicated_param_dict(self.unique_param_dict, param_dict):
+        if not self._check_duplicated_param_dict(self.unique_param_dict, param_dict) and dup_check:
             return param_dict
         else :
             return self._generate_param_dict()
@@ -102,7 +103,7 @@ class HPOptimizationAbstract(object):
     def _generate_param_dict_list(self, num_params):
         param_dict_list = list()
         for _ in range(num_params):
-            param_dict = self._generate_param_dict()
+            param_dict = self._generate_param_dict(dup_check=self.DUP_CHECK)
             param_dict_list.append(param_dict)
         return param_dict_list
     ###### Generate Parameters END

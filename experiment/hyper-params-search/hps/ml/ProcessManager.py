@@ -25,7 +25,7 @@ class ProcessManager(threading.Thread):
         self.device_list = list()
         if Constants.DEVICE_MODE.lower() == "gpu":
             self.device_list.append(int(Constants.DEVICE_MEM))
-        self.MEM_LIMIT = 1024
+        self.MEM_LIMIT = 2048
 
     def append(self, hash_val, ml_alg, param_dict):
         proc = MLProcessor(hash_val, ml_alg, param_dict, self.dataset_nm, self.queue)
@@ -34,8 +34,8 @@ class ProcessManager(threading.Thread):
     def _device_allocate(self, mem_limit=1024):
         if Constants.DEVICE_MODE.lower() == "gpu":
             for idx, device in enumerate(self.device_list):
-                if device > mem_limit:
-                    device -= mem_limit
+                if mem_limit < self.device_list[idx]:
+                    self.device_list[idx] -= mem_limit
                     return idx
             return None
         else:

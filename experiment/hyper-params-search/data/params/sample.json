@@ -4,12 +4,12 @@
   "hpo_params" : {
     "mut_prob" : 0.5,
     "cx_prob" : 0.5,
-    "sel_ratio" : 0.0,
-    "mut_ratio" : 0.5,
-    "cx_ratio" : 0.5,
-    "n_steps" : 1,
-    "n_params" : 3,
-    "k_val" : 1,
+    "sel_ratio" : 0.5,
+    "mut_ratio" : 0.25,
+    "cx_ratio" : 0.25,
+    "n_steps" : 2,
+    "n_params" : 10,
+    "k_val" : 3,
     "eval_key" : "accuracy"
   },
   "ml_alg" : "DNN",

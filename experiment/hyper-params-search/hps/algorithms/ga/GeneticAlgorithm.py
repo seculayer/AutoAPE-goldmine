@@ -15,6 +15,7 @@ class GeneticAlgorithm(HPOptimizationAbstract):
         # inheritance init
         super(GeneticAlgorithm, self).__init__(**kwargs)
         self._check_hpo_params()
+        self.DUP_CHECK = False
 
     ##### implement methods
     def _check_hpo_params(self):

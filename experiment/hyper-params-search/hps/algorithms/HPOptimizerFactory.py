@@ -15,4 +15,4 @@ class HPOptimizerFactory(object):
             ga = GeneticAlgorithm(hps_info=hpo_dict)
             return ga
         else:
-            return GeneticAlgorithm()
+            raise NotImplementedError
