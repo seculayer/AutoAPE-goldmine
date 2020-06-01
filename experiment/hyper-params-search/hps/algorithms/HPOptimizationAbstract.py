@@ -1,11 +1,10 @@
 
 import numpy as np
 import json
-from multiprocessing import Queue
 
 from hps.common.Constants import Constants
 from hps.common.Common import Common
-from hps.ml.MLProcessor import MLProcessor
+from hps.ml.ProcessManager import ProcessManager
 
 # class : HPOptimizationAbstract
 class HPOptimizationAbstract(object):
@@ -144,8 +143,9 @@ class HPOptimizationAbstract(object):
         ## get learning results
         hash_list = list()
         score_list = list()
-        proc_list = list()
-        result_queue = Queue()
+
+        proc_manager = ProcessManager(self.dataset_nm)
+
         for idx, hyper_params in enumerate(hyper_param_list):
             _temp_hash = self._param_dict_to_hash(hyper_params)
 
@@ -159,37 +159,24 @@ class HPOptimizationAbstract(object):
 
             # make params
             param_dict = self._make_learning_param_dict(step, idx, hyper_params)
-            print(param_dict)
+            proc_manager.append(_temp_hash, self.hps_info.get("ml_alg"), param_dict)
 
-            # Machine learning - multi-processing
-            proc_list.append(
-                MLProcessor(
-                    _temp_hash, self.hps_info["ml_alg"], param_dict,
-                    self.dataset_nm, result_queue,
-                )
-            )
+        proc_manager.start()
+        proc_manager.join()
 
-            # if results is not None and param_dict is not None:
-            #     ## param_dict
-            #     _temp_hash = self._param_dict_to_hash(param_dict)
-            #     hash_list.append(_temp_hash)
-            #
-            #     ## score
-            #     alg_sn = 0
-            #     score = float(results[alg_sn][-1][self._eval_key])
-            #     score_list.append(score)
-            #
-            #     ### store history
-            #     _temp_dict = self.unique_param_dict[_temp_hash]
-            #     _temp_dict["score"] = score
-            #     _temp_dict["results"] = results
+        for results in proc_manager.get_results():
+            ## hash value
+            _temp_hash = results.get("hash_value")
+            hash_list.append(_temp_hash)
 
-        for proc in proc_list:
-            proc.start()
+            ## score
+            score = float(results["results"][-1][self._eval_key])
+            score_list.append(score)
 
-        ### process end
-        for proc in proc_list:
-            proc.join()
+            ### store history
+            _temp_dict = self.unique_param_dict[_temp_hash]
+            _temp_dict["score"] = score
+            _temp_dict["results"] = results
 
         return hash_list, score_list
 

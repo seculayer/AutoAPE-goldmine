@@ -25,5 +25,11 @@ class Constants(metaclass=Singleton):
     DIR_DATA = __FILE_REAL_PATH + "/../.." + DEFAULT.get("DIR_CONFIG", "DIR_DATA")
     DIR_PARAMS = DIR_DATA + DEFAULT.get("DIR_CONFIG", "DIR_PARAMS")
 
+
+    ### ML DEVICES
+    DEVICE_MODE = DEFAULT.get("ML_DEVICE", "MODE")
+    NUM_DEVICES = DEFAULT.get("ML_DEVICE", "VISIBLE_DEVICES")
+    DEVICE_MEM  = DEFAULT.get("ML_DEVICE", "DEVICE_MEM")
+
 if __name__ == '__main__':
     print(Constants.DIR_DATA)

@@ -16,7 +16,7 @@
   "ml_params" : {
     "model_param":{
       "input_units" : "100",
-      "output_units" : "1",
+      "output_units" : "10",
       "global_step" : "10",
       "early_type" : "2",
       "min_step" : "10",

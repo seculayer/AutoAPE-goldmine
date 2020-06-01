@@ -31,6 +31,10 @@ class MLProcessor(multiprocessing.Process):
         self.gpu_idx = gpu_idx
         self.mem_limit = mem_limit
 
+    def set_devices(self, gpu_idx, mem_limit):
+        self.gpu_idx = gpu_idx
+        self.mem_limit = mem_limit
+
     def run(self):
         self.LOGGER.info("MLProcessing Running")
         TensorFlowUtils.device_memory_limit(self.gpu_idx, self.mem_limit)
