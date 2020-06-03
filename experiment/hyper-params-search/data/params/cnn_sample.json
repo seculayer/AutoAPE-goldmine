@@ -1,0 +1,41 @@
+{
+  "dataset" : "mnist",
+  "hpo_alg": "GA",
+  "hpo_params" : {
+    "mut_prob" : 0.5,
+    "cx_prob" : 0.5,
+    "sel_ratio" : 0.5,
+    "mut_ratio" : 0.25,
+    "cx_ratio" : 0.25,
+    "n_steps" : 2,
+    "n_params" : 10,
+    "k_val" : 3,
+    "eval_key" : "accuracy"
+  },
+  "ml_alg" : "CNN",
+  "ml_params" : {
+    "model_param":{
+      "input_units" : "784",
+      "output_units" : "10",
+      "global_step" : "10",
+      "early_type" : "2",
+      "min_step" : "10",
+      "early_key" : "accuracy",
+      "early_value" : "0.98",
+      "algorithm_type" : "classifier",
+      "filter_sizes" : "2",
+      "pool_sizes" : "2",
+      "pooling_fn" : "Max1D",
+      "conv_fn" : "Conv1D"
+    },
+    "pbounds":{
+      "dropout_prob": [0, 0.5],
+      "optimizer_fn": ["Adam", "rmsprop", "Adadelta"],
+      "learning_rate": [0, 0.8],
+      "act_fn": ["Tanh", "ReLU", "Sigmoid"],
+      "hidden_units" : [3,1024],
+      "initial_weight" : [0.01, 1.0],
+      "num_filters" : [2, 32]
+    }
+  }
+}
