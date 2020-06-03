@@ -17,6 +17,9 @@ class TensorFlowUtils(object):
             return tf.nn.sigmoid
         elif active == "tanh":
             return tf.nn.tanh
+        else:
+            raise NotImplementedError
+
     @staticmethod
     def get_optimizer_fn(optimizer_fn):
         optimizer = optimizer_fn.lower()
@@ -26,6 +29,38 @@ class TensorFlowUtils(object):
             return tf.keras.optimizers.Adadelta
         elif optimizer == "rmsprop":
             return tf.keras.optimizers.RMSprop
+        else:
+            raise NotImplementedError
+
+    @staticmethod
+    def get_pooling_fn(pooling_fn):
+        pooling = pooling_fn.lower()
+        if pooling == "max1d":
+            return tf.keras.layers.MaxPool1D
+        elif pooling == "average1d" :
+            return tf.keras.layers.AveragePooling1D
+        else :
+            raise NotImplementedError
+
+    @staticmethod
+    def get_conv_fn(conv_fn):
+        conv = conv_fn.lower()
+        if conv == "conv1d":
+            return tf.keras.layers.Conv1D
+        else :
+            raise NotImplementedError
+
+    @staticmethod
+    def get_rnn_cell(rnn_cell):
+        cell = rnn_cell.lower()
+        if cell == "rnn":
+            return tf.keras.layers.SimpleRNN
+        elif cell == "gru":
+            return tf.keras.layers.GRU
+        elif cell == "lstm":
+            return tf.keras.layers.LSTM
+        else:
+            raise NotImplementedError
 
     @staticmethod
     def get_units(input_units, hidden_units, output_units):
@@ -84,6 +119,9 @@ class TensorFlowUtils(object):
                 loss="mse",
                 optimizer=optimizer_fn(learning_rate),
             )
+
+        else:
+            raise NotImplementedError
 
     @staticmethod
     def device_memory_limit(gpu_idx, mem_limit):
