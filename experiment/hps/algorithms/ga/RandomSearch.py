@@ -25,7 +25,6 @@ class RandomSearch(HPOptimizationAbstract):
     ## random search main function
     def _generate(self, param_list, score_list):
         best_param_list = self._population(param_list)
-
         result_param_list = self._remove_duplicate_params(best_param_list)
         num_result_params = len(result_param_list)
 
