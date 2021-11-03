@@ -20,6 +20,7 @@ class ParticleSwarmOptimization(HPOptimizationAbstract):
 
     # generate candidate function
     def _generate(self, param_list, score_list):
+
         result_param_list = list()
         p_best_list = list()
 
@@ -41,6 +42,7 @@ class ParticleSwarmOptimization(HPOptimizationAbstract):
         for result_param in result_param_list:
             temp_hash = HPOptimizerUtil.param_dict_to_hash(result_param)
             self.unique_param_dict[temp_hash] = {"param_dict": result_param}
+
         ## leak
         if num_result_params < self._n_pop:
             result_param_list += self._generate_param_dict_list(self._n_pop - num_result_params)
@@ -66,7 +68,6 @@ class ParticleSwarmOptimization(HPOptimizationAbstract):
                 if max_score_value == score_list[i]:
                     return param_list[i]
 
-
     # global에서 최대
     def _g_best(self, param_list, p_best_list):
         if len(p_best_list) == 0:
@@ -85,11 +86,11 @@ class ParticleSwarmOptimization(HPOptimizationAbstract):
         else :
             return param_list
 
-
     def compute_velocity(self,param_dict_list, pos_best_i, g_best_i):
         # param_dict_list, p_best_value, g_best_value
         #w = random.uniform(0,1)
         # self.LOGGER.info("input / param_dict_list length, pos_best_i, g_best_i : {}, {}, {} ".format(len(param_dict_list), pos_best_i, g_best_i))
+
         w = 0.75
 
         # initialize each velocity dictionary in list
@@ -112,6 +113,7 @@ class ParticleSwarmOptimization(HPOptimizationAbstract):
                     vel_cognitive = self._c1*r1*(pos_best_i[j] - param_dict[j])
                     vel_social = self._c2*r2*(g_best_i[j] - param_dict[j])
                     # self.LOGGER.info("i, j, velocity_list :{},{}, {}".format(i, j, velocity_list[i][j]))
+
                     velocity_list[i][j] = w * velocity_list[i][j] + vel_cognitive + vel_social
 
                 else :
@@ -136,6 +138,7 @@ class ParticleSwarmOptimization(HPOptimizationAbstract):
                 else :
                     param_dict[j] = param_dict[j]
         return param_list
+
     '''
     def compute_velocity(self,param_dict_list, pos_best_i, g_best_i):
         # random inertia weight
