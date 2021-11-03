@@ -2,6 +2,7 @@ import random
 import time
 import numpy as np
 from hps.algorithms.HPOptimizationAbstract import HPOptimizationAbstract
+from hps.algorithms.HPOptimizerUtil import HPOptimizerUtil
 
 
 class SimulatedAnnealing(HPOptimizationAbstract):
@@ -23,13 +24,22 @@ class SimulatedAnnealing(HPOptimizationAbstract):
 
         # random init population
         best_param_list = self._population(param_list)
+        num_result_params = len(best_param_list)
+        if num_result_params < self._n_pop :
+            best_param_list += self._generate_param_dict_list(self._n_pop - num_result_params)
+        elif num_result_params > self._n_pop :
+            random.shuffle(best_param_list)
+            best_param_list = best_param_list[:self._n_pop]
+
+        ## length check
         # population 값과 비교할 후보군
         neighbor_selection = self._neighbor(best_param_list)
         # population & 후보군 중 선택하는 방법
         accept_criteria = self._accept(neighbor_selection, best_param_list)
 
         result_param_list = accept_criteria
-        result_param_list = self._remove_duplicate_params(result_param_list)
+        result_param_list = HPOptimizerUtil.remove_duplicated_params(self.unique_param_dict, result_param_list)
+
         return result_param_list
 
 
@@ -51,13 +61,13 @@ class SimulatedAnnealing(HPOptimizationAbstract):
         _, of_final = self._learn(self._n_steps, param_dict_list)
         _, of_new = self._learn(self._n_steps, best_params)
 
-
         # best값과 neighbor값의 비교
         if of_new <= of_final :
             best_params_list = param_dict_list
         else :
             random_value = np.random.rand()
-            form = 1 / (np.exp((of_new[1] - of_final[1]) / self._T0))
+            form = 1 / (np.exp((of_new[0] - of_final[0]) / self._T0))
+
             if random_value <= form :
                 best_params_list = best_params
             else :
