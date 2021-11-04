@@ -6,13 +6,14 @@
 import os
 import tensorflow as tf
 
+
 # class : TensorFlowUtils
 class TensorFlowUtils(object):
     @staticmethod
     def get_active_fn(act_fn):
         active = act_fn.lower()
         if active == "relu":
-            return  tf.nn.relu
+            return tf.nn.relu
         elif active == "sigmoid":
             return tf.nn.sigmoid
         elif active == "tanh":
@@ -37,9 +38,9 @@ class TensorFlowUtils(object):
         pooling = pooling_fn.lower()
         if pooling == "max1d":
             return tf.keras.layers.MaxPool1D
-        elif pooling == "average1d" :
+        elif pooling == "average1d":
             return tf.keras.layers.AveragePooling1D
-        else :
+        else:
             raise NotImplementedError
 
     @staticmethod
@@ -47,7 +48,7 @@ class TensorFlowUtils(object):
         conv = conv_fn.lower()
         if conv == "conv1d":
             return tf.keras.layers.Conv1D
-        else :
+        else:
             raise NotImplementedError
 
     @staticmethod
@@ -98,14 +99,14 @@ class TensorFlowUtils(object):
             if units[-1] == 1:
                 final_act_fn = tf.nn.sigmoid
 
-        model.add(tf.keras.layers.Dense(units[-1], activation=final_act_fn, name=name+"_predict", ))
+        model.add(tf.keras.layers.Dense(units[-1], activation=final_act_fn, name=name + "_predict", ))
         return model
 
     @staticmethod
     def compile_model(model, algorithm_type, output_units, optimizer_fn, learning_rate):
         if algorithm_type == "classifier":
             # loss_fn_nm = 'categorical_crossentropy'
-            loss_fn_nm='sparse_categorical_crossentropy'
+            loss_fn_nm = 'sparse_categorical_crossentropy'
             if output_units == 1:
                 loss_fn_nm = "binary_crossentropy"
             model.compile(
@@ -129,4 +130,6 @@ class TensorFlowUtils(object):
         if str(gpu_idx) != "-1":
             physical_devices = tf.config.experimental.list_physical_devices('GPU')
             print(physical_devices)
-            tf.config.experimental.set_virtual_device_configuration(physical_devices[0],[tf.config.experimental.VirtualDeviceConfiguration(memory_limit=mem_limit)])
+            tf.config.experimental.set_virtual_device_configuration(
+                physical_devices[0],
+                [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=mem_limit)])

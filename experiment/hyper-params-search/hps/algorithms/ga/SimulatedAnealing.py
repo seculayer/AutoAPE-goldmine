@@ -61,14 +61,13 @@ class SimulatedAnnealing(HPOptimizationAbstract):
         _, of_final = self._learn(self._n_steps, param_dict_list)
         _, of_new = self._learn(self._n_steps, best_params)
 
-
-
         # best값과 neighbor값의 비교
         if of_new <= of_final :
             best_params_list = param_dict_list
         else :
             random_value = np.random.rand()
             form = 1 / (np.exp((of_new[0] - of_final[0]) / self._T0))
+
             if random_value <= form :
                 best_params_list = best_params
             else :

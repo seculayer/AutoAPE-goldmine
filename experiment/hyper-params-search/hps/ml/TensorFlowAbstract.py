@@ -6,6 +6,7 @@
 from hps.utils.keras.callback.LearnResultCallback import LearnResultCallback
 from hps.utils.keras.callback.EarlyStopCallback import EarlyStopCallback
 
+
 # class : TensorFlowAbstract
 class TensorFlowAbstract(object):
     def __init__(self, param_dict):
@@ -24,7 +25,7 @@ class TensorFlowAbstract(object):
     @staticmethod
     def _check_model_params(param_dict):
         _param_dict = dict()
-        try :
+        try:
             ### learning parameters
             _param_dict["model_nm"] = str(param_dict["model_nm"])
             _param_dict["algorithm_type"] = str(param_dict["algorithm_type"])
@@ -37,7 +38,7 @@ class TensorFlowAbstract(object):
     @staticmethod
     def _check_learning_params(param_dict):
         _param_dict = dict()
-        try :
+        try:
             _param_dict["global_step"] = int(param_dict["global_step"])
             if _param_dict["global_step"] < 1:
                 _param_dict["global_step"] = 1
