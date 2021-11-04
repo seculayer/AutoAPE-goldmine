@@ -1,0 +1,36 @@
+{
+  "dataset" : "cifar10",
+  "hpo_alg": "GA",
+  "hpo_params" : {
+    "mut_prob" : 0.5,
+    "cx_prob" : 0.5,
+    "sel_ratio" : 0.5,
+    "mut_ratio" : 0.25,
+    "cx_ratio" : 0.25,
+    "n_steps" : 10,
+    "n_params" : 20,
+    "k_val" : 20,
+    "eval_key" : "accuracy"
+  },
+  "ml_alg" : "DNN",
+  "ml_params" : {
+    "model_param":{
+      "input_units" : "100",
+      "output_units" : "10",
+      "global_step" : "10",
+      "early_type" : "2",
+      "min_step" : "10",
+      "early_key" : "accuracy",
+      "early_value" : "0.95",
+      "algorithm_type" : "classifier"
+    },
+    "pbounds":{
+      "dropout_prob": [0, 0.5],
+      "optimizer_fn": ["Adam", "rmsprop", "Adadelta"],
+      "learning_rate": [0, 0.8],
+      "act_fn": ["Tanh", "ReLU", "Sigmoid"],
+      "hidden_units" : [3,1024],
+      "initial_weight" : [0.01, 1.0]
+    }
+  }
+}
