@@ -1,0 +1,36 @@
+{
+  "dataset" : "mnist",
+  "hpo_alg": "PSO",
+  "hpo_params" : {
+    "n_params" : 10,
+    "n_bests" : 20,
+    "w" : 0.1,
+    "n_steps" : 20,
+    "c1" : 0.01,
+    "c2" : 1.99,
+    "k_val" : 20,
+    "delta" : 0.1,
+    "eval_key" : "accuracy"
+  },
+  "ml_alg" : "DNN",
+  "ml_params" : {
+    "model_param":{
+      "input_units" : "100",
+      "output_units" : "10",
+      "global_step" : "10",
+      "early_type" : "var",
+      "min_step" : "3",
+      "early_key" : "accuracy",
+      "early_value" : "0.01",
+      "algorithm_type" : "classifier"
+    },
+    "pbounds": {
+      "dropout_prob": [0, 0.5],
+      "optimizer_fn": ["Adam", "rmsprop", "Adadelta"],
+      "learning_rate": [0, 0.01],
+      "act_fn": ["Tanh", "ReLU", "Sigmoid"],
+      "hidden_units" : [3,1024],
+      "initial_weight" : [0.01, 1.0]
+    }
+  }
+}
