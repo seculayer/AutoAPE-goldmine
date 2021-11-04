@@ -5,7 +5,7 @@
 
 from hps.dataset.MNISTDataset import MNISTDataset
 from hps.dataset.Cifar10Dataset import Cifar10Dataset
-
+from hps.dataset.COCODataset import COCODataset
 
 # class : DatasetFactory
 class DatasetFactory(object):
@@ -22,6 +22,8 @@ class DatasetFactory(object):
         if data_nm == "cifar10":
             if dim == 1:
                 return Cifar10Dataset.get_tf_dataset_1d()
+        if data_nm == "coco":
+            return COCODataset.load(dim, True)
 
     @staticmethod
     def get(data_nm):

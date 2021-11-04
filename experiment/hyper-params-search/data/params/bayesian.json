@@ -1,0 +1,32 @@
+{
+  "dataset" : "mnist",
+  "hpo_alg": "BO",
+  "hpo_params" : {
+    "init_points" : 10,
+    "n_steps" : 190,
+    "k_val" : 20,
+    "n_params" : 20,
+    "eval_key" : "accuracy"
+  },
+  "ml_alg" : "DNN",
+  "ml_params" : {
+    "model_param":{
+      "input_units" : "100",
+      "output_units" : "10",
+      "global_step" : "10",
+      "early_type" : "2",
+      "min_step" : "10",
+      "early_key" : "accuracy",
+      "early_value" : "0.98",
+      "algorithm_type" : "classifier",
+      "act_fn": "Tanh",
+      "optimizer_fn": "Adam",
+      "hidden_units" : "256,256,256,256"
+    },
+    "pbounds":{
+      "dropout_prob": [0, 0.5],
+      "learning_rate": [0, 0.8],
+      "initial_weight" : [0.01, 1.0]
+    }
+  }
+}
